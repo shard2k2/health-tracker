@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Statistics - Health Tracker</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        
+        h1 {
+            color: #667eea;
+            margin-bottom: 30px;
+        }
+        
+        .btn {
+            background: #667eea;
+            color: white;
+            padding: 12px 24px;
+            text-decoration: none;
+            border-radius: 8px;
+            display: inline-block;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+        
+        .btn:hover {
+            background: #5568d3;
+        }
+        
+        .stat-card {
+            background: #f8f9fa;
+            padding: 20px;
+            margin: 15px 0;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+        }
+        
+        .stat-card h3 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+        
+        .stat-value {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #333;
+        }
+        
+        .progress {
+            color: #28a745;
+        }
+        
+        .regress {
+            color: #dc3545;
+        }
+        
+        .empty {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📊 Statistics</h1>
+        
+        <a href="/" class="btn">← Back to Home</a>
+        
+        {% if stats %}
+            <div class="stat-card">
+                <h3>Weight Progress</h3>
+                <p>Starting Weight: <span class="stat-value">{{ stats.starting_weight }} kg</span></p>
+                <p>Current Weight: <span class="stat-value">{{ stats.current_weight }} kg</span></p>
+                {% if stats.weight_change < 0 %}
+                    <p class="progress">Change: {{ stats.weight_change }} kg 📉 Great progress!</p>
+                {% elif stats.weight_change > 0 %}
+                    <p class="regress">Change: +{{ stats.weight_change }} kg 📈</p>
+                {% else %}
+                    <p>Change: No change</p>
+                {% endif %}
+            </div>
+            
+            <div class="stat-card">
+                <h3>Blood Pressure</h3>
+                <p>Average BP: <span class="stat-value">{{ "%.0f"|format(stats.avg_systolic) }}/{{ "%.0f"|format(stats.avg_diastolic) }}</span></p>
+                <p>Latest Status: <span class="stat-value">{{ stats.latest_status }} {{ stats.latest_symbol }}</span></p>
+            </div>
+            
+            <div class="stat-card">
+                <h3>Overall</h3>
+                <p>Total Entries: <span class="stat-value">{{ stats.entry_count }}</span></p>
+            </div>
+        {% else %}
+            <div class="empty">
+                <p>No data available yet. Add some entries first!</p>
+            </div>
+        {% endif %}
+    </div>
+</body>
+</html>
