@@ -95,5 +95,15 @@ def statistics():
     
     return render_template('stats.html', stats=stats)
 
+@app.route('/delete/<int:index>')
+def delete_entry(index):
+    health_data = load_data()
+    
+    if 0 <= index < len(health_data):
+        health_data.pop(index)  # Remove the entry at that index
+        save_data(health_data)
+    
+    return redirect(url_for('home'))
+
 if __name__ == '__main__':
     app.run(debug=True)
